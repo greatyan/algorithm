@@ -1,0 +1,10 @@
+<project name="percolation" default="zip">
+	<target name="zip">
+		<zip destfile="./percolation.zip">
+			<fileset dir="./src/" >
+				<include name="Percolation.java"/>
+				<include name="PercolationStats.java"/>
+			</fileset>
+		</zip>
+	</target>
+</project>
