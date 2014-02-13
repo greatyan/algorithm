@@ -1,0 +1,11 @@
+<project name="queues" default="zip">
+	<target name="zip">
+		<zip destfile="./queues.zip">
+			<fileset dir="./src/" >
+				<include name="Deque.java"/>
+				<include name="RandomizedQueue.java"/>
+				<include name="Subset.java"/>
+			</fileset>
+		</zip>
+	</target>
+</project>
