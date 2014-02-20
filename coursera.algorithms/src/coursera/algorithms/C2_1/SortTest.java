@@ -3,17 +3,19 @@ package coursera.algorithms.C2_1;
 import java.util.Arrays;
 import java.util.Random;
 
+import coursera.algorithms.C2_2.Merge;
+import coursera.algorithms.C2_2.MergeInsert;
+
 public class SortTest {
 
     public static void main(String[] args) {
-        int[] sizes = new int[] { 512, 1024, 2048, 4096 };
-        SortBase[] sorts = new SortBase[] { new InsertionSentinel(),
-                new Insertion(), new Shell() };
+        int[] sizes = new int[] { 4096 * 16, 8192 * 16, 16384 * 16 };
+        SortBase[] sorts = new SortBase[] { new Merge(), new MergeInsert() };
 
         new SortTest().testRandom(sizes, sorts);
-        new SortTest().testWorst(sizes, sorts);
-        new SortTest().testBest(sizes, sorts);
-        new SortTest().testHSorted(sizes, sorts);
+        // new SortTest().testWorst(sizes, sorts);
+        // new SortTest().testBest(sizes, sorts);
+        // new SortTest().testHSorted(sizes, sorts);
     }
 
     private void testRandom(int[] sizes, SortBase[] sorts) {
