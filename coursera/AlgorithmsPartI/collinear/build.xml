@@ -1,0 +1,11 @@
+<project name="collinear" default="zip">
+	<target name="zip">
+		<zip destfile="./collinear.zip">
+			<fileset dir="./src/" >
+				<include name="Point.java"/>
+				<include name="Fast.java"/>
+				<include name="Brute.java"/>
+			</fileset>
+		</zip>
+	</target>
+</project>
