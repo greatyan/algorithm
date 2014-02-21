@@ -4,13 +4,12 @@ import java.util.Arrays;
 import java.util.Random;
 
 import coursera.algorithms.C2_2.Merge;
-import coursera.algorithms.C2_2.MergeInsert;
 
 public class SortTest {
 
     public static void main(String[] args) {
         int[] sizes = new int[] { 4096 * 16, 8192 * 16, 16384 * 16 };
-        SortBase[] sorts = new SortBase[] { new Merge(), new MergeInsert() };
+        SortBase[] sorts = new SortBase[] { new Merge() };
 
         new SortTest().testRandom(sizes, sorts);
         // new SortTest().testWorst(sizes, sorts);
