@@ -1,0 +1,10 @@
+<project name="8puzzle" default="zip">
+	<target name="zip">
+		<zip destfile="./8puzzle.zip">
+			<fileset dir="./src/" >
+				<include name="Board.java"/>
+				<include name="Solver.java"/>
+			</fileset>
+		</zip>
+	</target>
+</project>
