@@ -238,15 +238,19 @@ public class KdTree {
 			return null;
 		}
 		NearestStatus status = new NearestStatus();
-		status.distance = p.distanceTo(root.point);
+		status.distance = p.distanceSquaredTo(root.point);
 		status.point = root.point;
 		nearstX(root, p, status);
 		return status.point;
 	}
 
+	private double distanceSquaredTo(double v1, double v2) {
+		return (v1 - v2) * (v1 - v2);
+	}
+
 	private void nearstX(Node node, Point2D point, NearestStatus status) {
 
-		double distance = node.point.distanceTo(point);
+		double distance = node.point.distanceSquaredTo(point);
 		if (distance < status.distance) {
 			status.distance = distance;
 			status.point = node.point;
@@ -258,7 +262,8 @@ public class KdTree {
 			}
 			if (node.rightNode != null) {
 				// should search the right part?
-				if (point.x() + status.distance >= node.point.x()) {
+
+				if (distanceSquaredTo(node.point.x(), point.x()) < status.distance) {
 					nearstY(node.rightNode, point, status);
 				}
 			}
@@ -268,7 +273,7 @@ public class KdTree {
 				nearstY(node.rightNode, point, status);
 			}
 			if (node.leftNode != null) {
-				if (point.x() - status.distance < node.point.x()) {
+				if (distanceSquaredTo(node.point.x(), point.x()) < status.distance) {
 					nearstY(node.leftNode, point, status);
 				}
 			}
@@ -276,7 +281,7 @@ public class KdTree {
 	}
 
 	private void nearstY(Node node, Point2D point, NearestStatus status) {
-		double distance = node.point.distanceTo(point);
+		double distance = node.point.distanceSquaredTo(point);
 		if (distance < status.distance) {
 			status.distance = distance;
 			status.point = node.point;
@@ -288,7 +293,7 @@ public class KdTree {
 			}
 			if (node.rightNode != null) {
 				// should search the right part?
-				if (point.y() + status.distance >= node.point.y()) {
+				if (distanceSquaredTo(node.point.y(), point.y()) < status.distance) {
 					nearstX(node.rightNode, point, status);
 				}
 			}
@@ -298,7 +303,7 @@ public class KdTree {
 				nearstX(node.rightNode, point, status);
 			}
 			if (node.leftNode != null) {
-				if (point.y() - status.distance < node.point.y()) {
+				if (distanceSquaredTo(node.point.y(), point.y()) < status.distance) {
 					nearstX(node.leftNode, point, status);
 				}
 			}
