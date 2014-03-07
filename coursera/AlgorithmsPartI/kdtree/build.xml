@@ -1,0 +1,10 @@
+<project name="kdtree" default="zip">
+	<target name="zip">
+		<zip destfile="./kdtree.zip">
+			<fileset dir="./src/" >
+				<include name="KdTree.java"/>
+				<include name="PointSET.java"/>
+			</fileset>
+		</zip>
+	</target>
+</project>
