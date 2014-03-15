@@ -1,4 +1,3 @@
-
 package com.actuate.wyan;
 
 import java.util.ArrayList;
@@ -8,19 +7,17 @@ import java.util.HashSet;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class FourSum
-{
+public class FourSum {
 
 	@Test
-	public void test( )
-	{
-		Assert.assertEquals( 1,
-				new Solution( ).fourSum( new int[]{0, 0, 0, 0}, 0 ).size( ) );
+	public void test() {
+		Assert.assertEquals(1,
+				new Solution().fourSum(new int[] { 0, 0, 0, 0 }, 0).size());
 
-		Assert.assertEquals( 3,
-				new Solution( ).fourSum( new int[]{1, 0, -1, 0, -2, 2}, 0 )
-						.size( ) );
-		new Solution( ).fourSum( new int[]{91277418, 66271374, 38763793,
+		Assert.assertEquals(3,
+				new Solution().fourSum(new int[] { 1, 0, -1, 0, -2, 2 }, 0)
+						.size());
+		new Solution().fourSum(new int[] { 91277418, 66271374, 38763793,
 				4092006, 11415077, 60468277, 1122637, 72398035, -62267800,
 				22082642, 60359529, -16540633, 92671879, -64462734, -55855043,
 				-40899846, 88007957, -57387813, -49552230, -96789394, 18318594,
@@ -54,68 +51,125 @@ public class FourSum
 				-71017359, -18397211, 27941418, -34699076, 74174334, 96928957,
 				44328607, 49293516, -39034828, 5945763, -47046163, 10986423,
 				63478877, 30677010, -21202664, -86235407, 3164123, 8956697,
-				-9003909, -18929014, -73824245}, -236727523 );
+				-9003909, -18929014, -73824245 }, -236727523);
+		Assert.assertEquals(
+				8,
+				new Solution().fourSum(new int[] { -3, -2, -1, 0, 0, 1, 2, 3 },
+						0).size());
 	}
 
-	public class Solution
-	{
+	public class Solution {
 
-		public ArrayList<ArrayList<Integer>> fourSum( int[] num, int target )
-		{
-			HashSet<Result> results = doFourSum( num, target );
+		int skipToNextDiff(int[] num, int offset) {
+			for (int i = offset; i < num.length; i++) {
+				if (num[i] != num[offset]) {
+					return i;
+				}
+			}
+			return num.length;
+		}
+
+		public ArrayList<ArrayList<Integer>> fourSum(int[] num, int target) {
+			ArrayList<ArrayList<Integer>> results = new ArrayList<ArrayList<Integer>>();
+			Arrays.sort(num);
+			for (int i = 0; i < num.length - 3; i++) {
+				int sum1 = num[i];
+				if (sum1 + num[i + 1] + num[i + 2] + num[i + 3] > target) {
+					continue;
+				}
+				if (sum1 + num[num.length - 1] + num[num.length - 2]
+						+ num[num.length - 3] < target) {
+					continue;
+				}
+				for (int j = i + 1; j < num.length - 2; j++) {
+					int sum2 = sum1 + num[j];
+					if (sum2 + num[j + 1] + num[j + 2] > target) {
+						continue;
+					}
+					if (sum2 + num[num.length - 1] + num[num.length - 2] < target) {
+						continue;
+					}
+					for (int k = j + 1; k < num.length - 1; k++) {
+						int sum3 = sum2 + num[k];
+						if (sum3 + num[k + 1] > target) {
+							continue;
+						}
+						if (sum3 + num[num.length - 1] < target) {
+							continue;
+						}
+						for (int l = k + 1; l < num.length; l++) {
+							int sum4 = sum3 + num[l];
+							if (sum4 == target) {
+								ArrayList<Integer> values = new ArrayList<Integer>(
+										4);
+								values.add(num[i]);
+								values.add(num[j]);
+								values.add(num[k]);
+								values.add(num[l]);
+								results.add(values);
+							} else if (sum4 > target) {
+								break;
+							}
+							l = skipToNextDiff(num, l) - 1;
+						}
+						k = skipToNextDiff(num, k) - 1;
+					}
+					j = skipToNextDiff(num, j) - 1;
+				}
+				i = skipToNextDiff(num, i) - 1;
+			}
+			return results;
+		}
+	}
+
+	public class Solution1 {
+
+		public ArrayList<ArrayList<Integer>> fourSum(int[] num, int target) {
+			HashSet<Result> results = doFourSum(num, target);
 			ArrayList<ArrayList<Integer>> arrays = new ArrayList<ArrayList<Integer>>(
-					results.size( ) );
-			for ( Result result : results )
-			{
-				arrays.add( result.toArray( ) );
+					results.size());
+			for (Result result : results) {
+				arrays.add(result.toArray());
 			}
 			return arrays;
 		}
 
-		public HashSet<Result> doFourSum( int[] num, int target )
-		{
-			Arrays.sort( num );
-			HashSet<Result> results = new HashSet<Result>( );
+		public HashSet<Result> doFourSum(int[] num, int target) {
+			Arrays.sort(num);
+			HashSet<Result> results = new HashSet<Result>();
 			int minI = 0;
 			int maxI = num.length - 3;
-			for ( int i = minI; i < maxI; i++ )
-			{
+			for (int i = minI; i < maxI; i++) {
 				int sum1 = num[i];
 				int minJ = i + 1;
 				int maxJ = num.length - 2;
-				if ( sum1 + num[minI + 1] + num[minI + 2] + num[minI + 3] > target )
-				{
+				if (sum1 + num[minI + 1] + num[minI + 2] + num[minI + 3] > target) {
 					continue;
 				}
-				if ( sum1 + num[maxI] + num[maxI + 1] + num[maxI + 2] < target )
-				{
+				if (sum1 + num[maxI] + num[maxI + 1] + num[maxI + 2] < target) {
 					continue;
 				}
 
-				for ( int j = minJ; j < maxJ; j++ )
-				{
+				for (int j = minJ; j < maxJ; j++) {
 					int sum2 = sum1 + num[j];
 					int minK = j + 1;
 					int maxK = num.length - 1;
-					if ( sum2 + num[minJ + 1] + num[minJ + 2] > target )
-					{
+					if (sum2 + num[minJ + 1] + num[minJ + 2] > target) {
 						continue;
 					}
-					if ( sum2 + num[maxJ] + num[maxJ + 1] < target )
-					{
+					if (sum2 + num[maxJ] + num[maxJ + 1] < target) {
 						continue;
 					}
-					for ( int k = minK; k < maxK; k++ )
-					{
+					for (int k = minK; k < maxK; k++) {
 						int sum3 = sum2 + num[k];
 						int minL = k + 1;
 						int maxL = num.length;
 						int remain = target - sum3;
-						int index = Arrays.binarySearch( num, minL, maxL,
-								remain );
-						if ( index >= 0 )
-						{
-							results.add( new Result( new int[]{num[i], num[j], num[k], num[index]} ) );
+						int index = Arrays
+								.binarySearch(num, minL, maxL, remain);
+						if (index >= 0) {
+							results.add(new Result(new int[] { num[i], num[j],
+									num[k], num[index] }));
 						}
 					}
 				}
@@ -123,28 +177,23 @@ public class FourSum
 			return results;
 		}
 
-		class Result
-		{
+		class Result {
 
 			int[] values;
 
-			public Result( int[] values )
-			{
+			public Result(int[] values) {
 				this.values = values;
 			}
 
 			@Override
-			public int hashCode( )
-			{
+			public int hashCode() {
 				return 7 * values[0] + 13 * values[1] + 17 * values[2] + 19
 						* values[3];
 			}
 
 			@Override
-			public boolean equals( Object v )
-			{
-				if ( v instanceof Result )
-				{
+			public boolean equals(Object v) {
+				if (v instanceof Result) {
 					Result r = (Result) v;
 					return values[0] == r.values[0] && values[1] == r.values[1]
 							&& values[3] == r.values[3]
@@ -154,22 +203,20 @@ public class FourSum
 			}
 
 			@Override
-			public String toString( )
-			{
-				StringBuilder sb = new StringBuilder( );
-				sb.append( "[" ).append( values[0] ).append( "," )
-						.append( values[1] ).append( "," ).append( values[2] )
-						.append( "," ).append( values[3] ).append( "]" );
-				return sb.toString( );
+			public String toString() {
+				StringBuilder sb = new StringBuilder();
+				sb.append("[").append(values[0]).append(",").append(values[1])
+						.append(",").append(values[2]).append(",")
+						.append(values[3]).append("]");
+				return sb.toString();
 			}
 
-			public ArrayList<Integer> toArray( )
-			{
-				ArrayList<Integer> array = new ArrayList<Integer>( 4 );
-				array.add( values[0] );
-				array.add( values[1] );
-				array.add( values[2] );
-				array.add( values[3] );
+			public ArrayList<Integer> toArray() {
+				ArrayList<Integer> array = new ArrayList<Integer>(4);
+				array.add(values[0]);
+				array.add(values[1]);
+				array.add(values[2]);
+				array.add(values[3]);
 				return array;
 			}
 		}
