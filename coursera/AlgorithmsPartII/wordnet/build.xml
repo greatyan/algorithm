@@ -1,0 +1,11 @@
+<project name="wordnet" default="zip">
+	<target name="zip">
+		<zip destfile="./wordnet.zip">
+			<fileset dir="./src/">
+				<include name="SAP.java" />
+				<include name="WordNet.java" />
+				<include name="Outcast.java" />
+			</fileset>
+		</zip>
+	</target>
+</project>
