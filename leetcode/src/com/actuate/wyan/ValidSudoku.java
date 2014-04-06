@@ -1,121 +1,119 @@
-
 package com.actuate.wyan;
 
-public class ValidSudoku
-{
+import org.junit.Assert;
+import org.junit.Test;
 
-	public class Solution
-	{
+public class ValidSudoku {
 
-		public boolean isValidSudoku( char[][] board )
-		{
+    @Test
+    public void test() {
+        Assert.assertTrue(new Solution()
+                .isValidSudoku(new String[] { ".87654321", "2........",
+                        "3........", "4........", "5........", "6........",
+                        "7........", "8........", "9........" }));
+    }
 
-			// valid row
-			for ( int i = 0; i < 9; i++ )
-			{
-				if ( validRow( board, i ) == false )
-				{
-					return false;
-				}
-			}
+    public class Solution {
 
-			// valid column
-			for ( int i = 0; i < 9; i++ )
-			{
-				if ( validColumn( board, i ) == false )
-				{
-					return false;
-				}
-			}
-			// valid area
+        public boolean isValidSudoku(String[] board) {
+            char[][] cb = new char[9][];
+            for (int i = 0; i < 9; i++) {
+                cb[i] = board[i].toCharArray();
+            }
+            return isValidSudoku(cb);
+        }
 
-			for ( int i = 0; i < 3; i++ )
-			{
-				for ( int j = 0; j < 3; j++ )
-				{
-					if ( validArea( board, i * 3, j * 3 ) == false )
-					{
-						return false;
-					}
-				}
-			}
-			return true;
-		}
+        public boolean isValidSudoku(char[][] board) {
 
-		public boolean validRow( char[][] board, int row )
-		{
-			boolean[] used = new boolean[9];
+            // valid row
+            for (int i = 0; i < 9; i++) {
+                if (validRow(board, i) == false) {
+                    return false;
+                }
+            }
 
-			for ( int i = 0; i < 9; i++ )
-			{
-				char v = board[row][i];
-				int index = v - '0';
-				if ( index >= 0 && index < 9 )
-				{
-					if ( used[index] == true )
-					{
-						return false;
-					}
-					used[index] = true;
-				}
-				else
-				{
-					return false;
-				}
-			}
-			return true;
-		}
+            // valid column
+            for (int i = 0; i < 9; i++) {
+                if (validColumn(board, i) == false) {
+                    return false;
+                }
+            }
+            // valid area
 
-		public boolean validColumn( char[][] board, int col )
-		{
-			boolean[] used = new boolean[9];
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    if (validArea(board, i * 3, j * 3) == false) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
 
-			for ( int i = 0; i < 9; i++ )
-			{
-				char v = board[i][col];
-				int index = v - '0';
-				if ( index >= 0 && index < 9 )
-				{
-					if ( used[index] == true )
-					{
-						return false;
-					}
-					used[index] = true;
-				}
-				else
-				{
-					return false;
-				}
-			}
-			return true;
-		}
+        public boolean validRow(char[][] board, int row) {
+            boolean[] used = new boolean[9];
 
-		public boolean validArea( char[][] board, int row, int col )
-		{
-			boolean[] used = new boolean[9];
+            for (int i = 0; i < 9; i++) {
+                char v = board[row][i];
+                if (v == '.') {
+                    continue;
+                }
+                int index = v - '0';
+                if (index >= 1 && index <= 9) {
+                    if (used[index - 1] == true) {
+                        return false;
+                    }
+                    used[index - 1] = true;
+                } else {
+                    return false;
+                }
+            }
+            return true;
+        }
 
-			for ( int i = 0; i < 3; i++ )
-			{
-				for ( int j = 0; j < 3; j++ )
-				{
-					char v = board[row + i][col + j];
-					int index = v - '0';
-					if ( index >= 0 && index < 9 )
-					{
-						if ( used[index] == true )
-						{
-							return false;
-						}
-						used[index] = true;
-					}
-					else
-					{
-						return false;
-					}
-				}
-			}
-			return true;
-		}
+        public boolean validColumn(char[][] board, int col) {
+            boolean[] used = new boolean[9];
 
-	}
+            for (int i = 0; i < 9; i++) {
+                char v = board[i][col];
+                if (v == '.') {
+                    continue;
+                }
+                int index = v - '0';
+                if (index >= 1 && index <= 9) {
+                    if (used[index - 1] == true) {
+                        return false;
+                    }
+                    used[index - 1] = true;
+                } else {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public boolean validArea(char[][] board, int row, int col) {
+            boolean[] used = new boolean[9];
+
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    char v = board[row + i][col + j];
+                    if (v == '.') {
+                        continue;
+                    }
+                    int index = v - '0';
+                    if (index >= 1 && index <= 9) {
+                        if (used[index - 1] == true) {
+                            return false;
+                        }
+                        used[index - 1] = true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+    }
 }
